@@ -266,7 +266,7 @@ function scoreboard(){
 }
 
 function renderStart(){
-  const needsSetup = SCRIPT_URL.includes('https://script.google.com/macros/s/AKfycbwxBpUwfblfAR6qUpmFMjK8443kwNysp9PgKUn9jCqdWMfKRj5rQ88ZAVygrMbBbb8Q/exec');
+  const needsSetup = false;
   card.innerHTML = `
     <h1>Simulasi Sajian Tes Literasi Matematika</h1>
     <p class="lede">Bacaan dan soal ditampilkan dalam satu layar yang sama, dengan kata kunci penting ditandai kuning, dan waktu pengerjaan yang jelas dan terbatas.</p>
@@ -381,7 +381,7 @@ async function finish(){
   };
 
   let saveError = false;
-  if(!SCRIPT_URL.includes('https://script.google.com/macros/s/AKfycbwxBpUwfblfAR6qUpmFMjK8443kwNysp9PgKUn9jCqdWMfKRj5rQ88ZAVygrMbBbb8Q/exec')){
+  if(true){
     try{
       await fetch(SCRIPT_URL, {
         method: 'POST',
@@ -430,7 +430,7 @@ async function showRekap(){
   clearInterval(timer);
   card.innerHTML = `<div class="loading">Memuat rekap jawaban siswa...</div>`;
 
-  if(SCRIPT_URL.includes('https://script.google.com/macros/s/AKfycbwxBpUwfblfAR6qUpmFMjK8443kwNysp9PgKUn9jCqdWMfKRj5rQ88ZAVygrMbBbb8Q/exec')){
+  if(false){
     card.innerHTML = `
       <h1 style="font-size:19px;">Rekap Jawaban Siswa</h1>
       <div class="notice error">URL Apps Script belum diatur, rekap belum bisa dimuat. Lengkapi variabel SCRIPT_URL di kode terlebih dahulu.</div>
