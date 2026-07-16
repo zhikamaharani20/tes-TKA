@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uji Coba Sajian Tes — Literasi Matematika TKA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14192C;
+    --ink-2:#1D2440;
+    --panel:#FBF8F2;
+    --panel-2:#F1ECE0;
+    --gold:#F2A93B;
+    --green:#3FAE7A;
+    --red:#E2554E;
+    --text-dark:#1B2440;
+    --text-muted:#7C7565;
+    --line:#E4DCC8;
+    --radius:18px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(circle at 15% -10%, #232B4A 0%, transparent 45%),
+      radial-gradient(circle at 110% 110%, #232B4A 0%, transparent 40%),
+      var(--ink);
+    min-height:100vh;
+    font-family:'Sora',sans-serif;
+    color:var(--text-dark);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:28px 16px;
+  }
+  .stage{width:100%;max-width:560px;}
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    font-size:12px;
+    color:#B7C0E8;
+    margin:0 0 10px 4px;
+    display:flex;
+    justify-content:space-between;
+  }
+  .card{
+    background:var(--panel);
+    border-radius:var(--radius);
+    padding:26px 24px 24px;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.04);
+    position:relative;
+  }
+  .scoreboard{
+    display:flex;align-items:center;justify-content:space-between;
+    background:var(--ink-2);
+    border-radius:14px;
+    padding:12px 16px;
+    margin-bottom:20px;
+    color:#fff;
+  }
+  .sb-block{display:flex;flex-direction:column;gap:2px;}
+  .sb-label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;letter-spacing:.12em;color:#8792BE;text-transform:uppercase;
+  }
+  .sb-value{font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:700;transition:color .3s ease;}
+  .sb-value.clock{font-variant-numeric:tabular-nums;}
+  .dots{display:flex;gap:6px;align-items:center;}
+  .dot{width:9px;height:9px;border-radius:50%;background:#3A4270;transition:background .25s ease, transform .25s ease;}
+  .dot.done{background:var(--gold);}
+  .dot.current{background:#fff;transform:scale(1.3);}
+
+  h1{font-size:clamp(20px,4.5vw,26px);line-height:1.25;margin:0 0 14px;font-weight:800;letter-spacing:-.01em;}
+  .lede{font-size:15px;color:var(--text-muted);line-height:1.6;margin:0 0 18px;}
+  label.field-label{
+    display:block;font-family:'IBM Plex Mono',monospace;font-size:11.5px;
+    color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;
+  }
+  input[type=text]{
+    width:100%;padding:13px 14px;border-radius:12px;border:1.5px solid var(--line);
+    background:var(--panel-2);font-family:'Sora',sans-serif;font-size:15px;color:var(--text-dark);
+    margin-bottom:16px;
+  }
+  input[type=text]:focus{outline:2px solid var(--gold);border-color:var(--gold);}
+
+  .passage{
+    background:var(--panel-2);
+    border-radius:14px;
+    padding:16px 18px 15px;
+    font-size:14.5px;
+    line-height:1.65;
+    color:var(--text-dark);
+    margin-bottom:16px;
+    border:1px solid var(--line);
+  }
+  .passage mark{background:rgba(242,169,59,.4);padding:0 3px;border-radius:4px;font-weight:600;color:var(--text-dark);}
+
+  button{font-family:'Sora',sans-serif;cursor:pointer;border:none;}
+  .btn-primary{
+    width:100%;background:var(--ink);color:#fff;font-weight:700;font-size:15.5px;
+    padding:15px 18px;border-radius:12px;transition:transform .15s ease, background .2s ease;
+  }
+  .btn-primary:hover{background:#232B4A;transform:translateY(-1px);}
+  .btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+  .btn-ghost{
+    width:100%;background:transparent;color:#B7C0E8;font-weight:600;font-size:13px;
+    padding:10px 12px;border-radius:10px;text-decoration:underline;margin-top:10px;
+  }
+  .btn-ghost:hover{color:#fff;}
+  .btn-secondary{
+    background:var(--panel-2);color:var(--text-dark);font-weight:700;font-size:14px;
+    padding:12px 16px;border-radius:12px;border:1.5px solid var(--line);
+  }
+
+  .option{
+    width:100%;text-align:left;background:var(--panel-2);border:1.5px solid var(--line);
+    border-radius:12px;padding:13px 15px;font-size:15px;font-weight:600;color:var(--text-dark);
+    margin-bottom:9px;display:flex;align-items:center;gap:12px;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .option .tag{
+    font-family:'IBM Plex Mono',monospace;font-size:12px;width:24px;height:24px;border-radius:50%;
+    background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .option:hover{border-color:var(--gold);}
+  .option.correct{background:rgba(63,174,122,.18);border-color:var(--green);}
+  .option.wrong{background:rgba(226,85,78,.16);border-color:var(--red);}
+  .option:disabled{cursor:default;}
+
+  .qnum{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;display:block;}
+  .qtext{font-size:16.5px;font-weight:700;line-height:1.5;margin:0 0 16px;}
+
+  .score-hero{text-align:center;padding:10px 0 8px;}
+  .score-num{font-family:'IBM Plex Mono',monospace;font-size:56px;font-weight:700;line-height:1;color:var(--ink);}
+  .score-num span{font-size:22px;color:var(--text-muted);}
+  .score-label{font-size:13px;color:var(--text-muted);margin-top:6px;font-weight:600;}
+  .meta-row{display:flex;gap:10px;margin:20px 0 20px;}
+  .meta-box{flex:1;background:var(--panel-2);border-radius:12px;padding:12px 14px;border:1px solid var(--line);}
+  .meta-box .m-label{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;}
+  .meta-box .m-value{font-size:19px;font-weight:700;margin-top:3px;font-family:'IBM Plex Mono',monospace;}
+  .footnote{font-size:12px;color:#B7C0E8;text-align:center;margin-top:14px;line-height:1.6;}
+
+  .rekap-table{width:100%;border-collapse:collapse;font-size:13.5px;margin-bottom:14px;}
+  .rekap-table th, .rekap-table td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);}
+  .rekap-table th{
+    font-family:'IBM Plex Mono',monospace;font-size:10.5px;text-transform:uppercase;
+    letter-spacing:.06em;color:var(--text-muted);
+  }
+  .rekap-table td.num{font-family:'IBM Plex Mono',monospace;font-weight:700;}
+  .rekap-empty{text-align:center;color:var(--text-muted);font-size:14px;padding:30px 10px;}
+  .notice{
+    background:rgba(242,169,59,.16);border:1px solid rgba(242,169,59,.4);
+    border-radius:10px;padding:10px 12px;font-size:12.5px;color:var(--text-dark);
+    margin-bottom:16px;line-height:1.5;
+  }
+  .notice.error{background:rgba(226,85,78,.14);border-color:rgba(226,85,78,.4);}
+  .btn-row{display:flex;gap:10px;}
+  .btn-row .btn-primary, .btn-row .btn-secondary{flex:1;}
+  .loading{text-align:center;color:var(--text-muted);font-size:14px;padding:24px 0;}
+
+  @media (max-width:400px){
+    .card{padding:20px 18px;}
+    .score-num{font-size:44px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="eyebrow"><span>TKA · LITERASI MATEMATIKA</span><span>SMPN 6 · 2025/2026</span></div>
+  <div class="card" id="card"></div>
+</div>
+
+<script>
+/* ====== KONFIGURASI PENTING ======
+   Ganti URL di bawah ini dengan URL Web App Google Apps Script kamu
+   setelah kamu deploy scriptnya (lihat panduan setup).
+   Contoh: 'https://script.google.com/macros/s/AKfycbx.../exec'
+*/
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwxBpUwfblfAR6qUpmFMjK8443kwNysp9PgKUn9jCqdWMfKRj5rQ88ZAVygrMbBbb8Q/exec';
+
+const QUIZ = [
+  {
+    passage: `Toko <mark>Sinar Jaya</mark> mengadakan promo alat tulis. Sebuah buku tulis dijual seharga <mark>Rp4.500</mark> per buah. Jika membeli dalam satu lusin (12 buah), pembeli mendapat potongan harga sebesar <mark>Rp6.000</mark> untuk keseluruhan pembelian.`,
+    question: "Berapa total uang yang harus dibayar jika membeli 1 lusin buku tulis tersebut?",
+    options: ["Rp48.000", "Rp54.000", "Rp58.000", "Rp60.000"],
+    answer: 1,
+    time: 60
+  },
+  {
+    passage: `Andi berangkat dari rumah menuju sekolah yang berjarak <mark>6 km</mark>. Ia mengendarai sepeda dengan kecepatan rata-rata <mark>12 km/jam</mark>.`,
+    question: "Berapa menit waktu yang dibutuhkan Andi untuk sampai ke sekolah?",
+    options: ["20 menit", "30 menit", "40 menit", "45 menit"],
+    answer: 1,
+    time: 60
+  },
+  {
+    passage: `Perpustakaan sekolah mencatat jumlah pengunjung selama 5 hari: Senin 24 orang, Selasa 30 orang, Rabu 18 orang, Kamis 28 orang, Jumat 20 orang.`,
+    question: "Berapa rata-rata jumlah pengunjung perpustakaan per hari selama 5 hari tersebut?",
+    options: ["22 orang", "24 orang", "26 orang", "28 orang"],
+    answer: 1,
+    time: 65
+  },
+  {
+    passage: `Sebuah tas ransel memiliki harga awal <mark>Rp180.000</mark>. Toko memberikan diskon sebesar <mark>25%</mark> untuk pembelian hari ini.`,
+    question: "Berapa harga yang harus dibayar setelah diskon?",
+    options: ["Rp45.000", "Rp125.000", "Rp135.000", "Rp150.000"],
+    answer: 2,
+    time: 55
+  },
+  {
+    passage: `Di sebuah minimarket, minyak goreng kemasan <mark>1 liter</mark> dijual seharga <mark>Rp18.000</mark>, sedangkan kemasan <mark>2 liter</mark> dijual seharga <mark>Rp33.000</mark>.`,
+    question: "Kemasan manakah yang harganya lebih hemat per liter?",
+    options: ["Kemasan 1 liter", "Kemasan 2 liter", "Harganya sama", "Tidak bisa ditentukan"],
+    answer: 1,
+    time: 55
+  }
+];
+
+let idx = 0;
+let score = 0;
+let totalTimeUsed = 0;
+let timer = null;
+let timeLeft = 0;
+let timeLimit = 0;
+let answered = false;
+let studentName = '';
+
+const card = document.getElementById('card');
+
+function fmt(sec){
+  const m = String(Math.floor(sec/60)).padStart(2,'0');
+  const s = String(sec%60).padStart(2,'0');
+  return m+':'+s;
+}
+
+function renderDots(){
+  let html = '<div class="dots">';
+  for(let i=0;i<QUIZ.length;i++){
+    let cls = 'dot';
+    if(i < idx) cls += ' done';
+    else if(i === idx) cls += ' current';
+    html += `<div class="${cls}"></div>`;
+  }
+  html += '</div>';
+  return html;
+}
+
+function scoreboard(){
+  return `
+    <div class="scoreboard">
+      <div class="sb-block">
+        <span class="sb-label">Soal</span>
+        <span class="sb-value">${idx+1} / ${QUIZ.length}</span>
+      </div>
+      ${renderDots()}
+      <div class="sb-block" style="align-items:flex-end;">
+        <span class="sb-label">Waktu</span>
+        <span class="sb-value clock" id="clock">${fmt(timeLeft)}</span>
+      </div>
+    </div>
+  `;
+}
+
+function renderStart(){
+  const needsSetup = SCRIPT_URL.includes('PASTE_URL');
+  card.innerHTML = `
+    <h1>Simulasi Sajian Tes Literasi Matematika</h1>
+    <p class="lede">Bacaan dan soal ditampilkan dalam satu layar yang sama, dengan kata kunci penting ditandai kuning, dan waktu pengerjaan yang jelas dan terbatas.</p>
+    ${needsSetup ? `<div class="notice error">Rekap belum aktif: URL Apps Script belum diisi di dalam kode (variabel SCRIPT_URL). Simulasi tetap bisa dicoba, tapi hasil belum tersimpan ke Google Sheets.</div>` : ''}
+    <label class="field-label" for="nama">Nama Siswa</label>
+    <input type="text" id="nama" placeholder="Tulis nama lengkap...">
+    <button class="btn-primary" id="mulaiBtn" onclick="mulai()">Mulai Simulasi</button>
+    <button class="btn-ghost" onclick="showRekap()">Lihat Rekap Jawaban (Mode Guru)</button>
+  `;
+  document.getElementById('nama').addEventListener('input', (e)=>{
+    document.getElementById('mulaiBtn').disabled = e.target.value.trim().length === 0;
+  });
+  document.getElementById('mulaiBtn').disabled = true;
+}
+
+function mulai(){
+  studentName = document.getElementById('nama').value.trim();
+  if(!studentName) return;
+  idx = 0; score = 0; totalTimeUsed = 0;
+  startQuestion();
+}
+
+function startQuestion(){
+  answered = false;
+  timeLimit = QUIZ[idx].time;
+  timeLeft = timeLimit;
+  renderQuestion();
+  clearInterval(timer);
+  timer = setInterval(tick, 1000);
+}
+
+function tick(){
+  if(answered) return;
+  timeLeft--;
+  totalTimeUsed++;
+  const clockEl = document.getElementById('clock');
+  if(clockEl){
+    clockEl.textContent = fmt(timeLeft);
+    if(timeLeft <= 10) clockEl.style.color = 'var(--red)';
+    else if(timeLeft <= timeLimit*0.4) clockEl.style.color = 'var(--gold)';
+    else clockEl.style.color = 'var(--green)';
+  }
+  if(timeLeft <= 0){
+    clearInterval(timer);
+    lockAnswer(-1);
+  }
+}
+
+function renderQuestion(){
+  const q = QUIZ[idx];
+  const letters = ['A','B','C','D'];
+  card.innerHTML = `
+    ${scoreboard()}
+    <span class="qnum">Bacaan &amp; Soal ${idx+1} dari ${QUIZ.length}</span>
+    <div class="passage">${q.passage}</div>
+    <p class="qtext">${q.question}</p>
+    <div id="options">
+      ${q.options.map((opt,i)=>`
+        <button class="option" data-i="${i}" onclick="lockAnswer(${i})">
+          <span class="tag">${letters[i]}</span> ${opt}
+        </button>
+      `).join('')}
+    </div>
+  `;
+  const clockEl = document.getElementById('clock');
+  if(clockEl){
+    if(timeLeft <= 10) clockEl.style.color = 'var(--red)';
+    else if(timeLeft <= timeLimit*0.4) clockEl.style.color = 'var(--gold)';
+    else clockEl.style.color = 'var(--green)';
+  }
+}
+
+function lockAnswer(choice){
+  if(answered) return;
+  answered = true;
+  clearInterval(timer);
+  const q = QUIZ[idx];
+  const correct = choice === q.answer;
+  if(correct) score++;
+
+  const opts = document.querySelectorAll('.option');
+  opts.forEach(o=>{
+    o.disabled = true;
+    const i = parseInt(o.dataset.i);
+    if(i === q.answer) o.classList.add('correct');
+    else if(i === choice) o.classList.add('wrong');
+  });
+
+  setTimeout(()=>{
+    idx++;
+    if(idx < QUIZ.length){
+      startQuestion();
+    } else {
+      finish();
+    }
+  }, 900);
+}
+
+async function finish(){
+  clearInterval(timer);
+  const total = QUIZ.length;
+  const nilai = Math.round((score/total)*100);
+  card.innerHTML = `<div class="loading">Menyimpan hasil...</div>`;
+
+  const record = {
+    nama: studentName,
+    skor: nilai,
+    benar: score,
+    total: total,
+    waktuDetik: totalTimeUsed,
+    timestamp: Date.now()
+  };
+
+  let saveError = false;
+  if(!SCRIPT_URL.includes('PASTE_URL')){
+    try{
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(record)
+      });
+    }catch(err){
+      console.error('Gagal menyimpan rekap ke Google Sheets:', err);
+      saveError = true;
+    }
+  } else {
+    saveError = true;
+  }
+
+  renderEnd(record, saveError);
+}
+
+function renderEnd(record, saveError){
+  const menit = Math.floor(record.waktuDetik/60);
+  const detik = record.waktuDetik % 60;
+  card.innerHTML = `
+    <div class="score-hero">
+      <div class="qnum" style="text-align:center;">Simulasi Selesai — ${record.nama}</div>
+      <div class="score-num">${record.skor}<span>/100</span></div>
+      <div class="score-label">${record.benar} dari ${record.total} soal benar</div>
+    </div>
+    <div class="meta-row">
+      <div class="meta-box">
+        <div class="m-label">Waktu Total</div>
+        <div class="m-value">${menit}m ${detik}s</div>
+      </div>
+      <div class="meta-box">
+        <div class="m-label">Rata-rata / Soal</div>
+        <div class="m-value">${Math.round(record.waktuDetik/record.total)}s</div>
+      </div>
+    </div>
+    ${saveError ? `<div class="notice error">Hasil belum tersimpan ke rekap (cek koneksi atau pengaturan SCRIPT_URL).</div>` : `<div class="notice">Hasil sudah tersimpan dan bisa dilihat guru di menu rekap.</div>`}
+    <div class="btn-row">
+      <button class="btn-secondary" onclick="renderStart()">Ulangi</button>
+      <button class="btn-primary" onclick="showRekap()">Lihat Rekap Guru</button>
+    </div>
+  `;
+}
+
+async function showRekap(){
+  clearInterval(timer);
+  card.innerHTML = `<div class="loading">Memuat rekap jawaban siswa...</div>`;
+
+  if(SCRIPT_URL.includes('PASTE_URL')){
+    card.innerHTML = `
+      <h1 style="font-size:19px;">Rekap Jawaban Siswa</h1>
+      <div class="notice error">URL Apps Script belum diatur, rekap belum bisa dimuat. Lengkapi variabel SCRIPT_URL di kode terlebih dahulu.</div>
+      <button class="btn-secondary" onclick="renderStart()">Kembali</button>
+    `;
+    return;
+  }
+
+  let records = [];
+  let loadError = false;
+  try{
+    const res = await fetch(SCRIPT_URL);
+    records = await res.json();
+  }catch(err){
+    console.error('Gagal memuat rekap:', err);
+    loadError = true;
+  }
+
+  records.sort((a,b)=> b.timestamp - a.timestamp);
+
+  const rows = records.map(r=>{
+    const d = new Date(Number(r.timestamp));
+    const tgl = d.toLocaleDateString('id-ID', {day:'2-digit',month:'short',year:'numeric'});
+    const jam = d.toLocaleTimeString('id-ID', {hour:'2-digit',minute:'2-digit'});
+    const menit = Math.floor(r.waktuDetik/60);
+    const detik = r.waktuDetik % 60;
+    return `
+      <tr>
+        <td>${r.nama}</td>
+        <td class="num">${r.skor}</td>
+        <td class="num">${r.benar}/${r.total}</td>
+        <td class="num">${menit}m ${detik}s</td>
+        <td>${tgl}, ${jam}</td>
+      </tr>
+    `;
+  }).join('');
+
+  card.innerHTML = `
+    <h1 style="font-size:19px;">Rekap Jawaban Siswa</h1>
+    ${loadError ? `<div class="notice error">Gagal memuat data rekap. Cek koneksi atau pengaturan Apps Script.</div>` : `<div class="notice">Data ini tersimpan di Google Sheets dan bisa dilihat siapa saja yang membuka menu ini — cocok untuk dipantau guru, tapi bukan tempat menyimpan data pribadi sensitif.</div>`}
+    ${records.length === 0 ? `<div class="rekap-empty">Belum ada siswa yang menyelesaikan simulasi.</div>` : `
+      <div style="overflow-x:auto;">
+        <table class="rekap-table">
+          <thead>
+            <tr><th>Nama</th><th>Nilai</th><th>Benar</th><th>Waktu</th><th>Selesai Pada</th></tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    `}
+    <div class="btn-row">
+      <button class="btn-secondary" onclick="renderStart()">Kembali</button>
+      <button class="btn-primary" onclick="showRekap()">Muat Ulang</button>
+    </div>
+  `;
+}
+
+renderStart();
+</script>
+
+</body>
+</html>
