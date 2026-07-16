@@ -175,11 +175,6 @@
 </div>
 
 <script>
-/* ====== KONFIGURASI PENTING ======
-   Ganti URL di bawah ini dengan URL Web App Google Apps Script kamu
-   setelah kamu deploy scriptnya (lihat panduan setup).
-   Contoh: 'https://script.google.com/macros/s/AKfycbx.../exec'
-*/
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwxBpUwfblfAR6qUpmFMjK8443kwNysp9PgKUn9jCqdWMfKRj5rQ88ZAVygrMbBbb8Q/exec';
 
 const QUIZ = [
@@ -266,11 +261,9 @@ function scoreboard(){
 }
 
 function renderStart(){
-  const needsSetup = false;
   card.innerHTML = `
     <h1>Simulasi Sajian Tes Literasi Matematika</h1>
     <p class="lede">Bacaan dan soal ditampilkan dalam satu layar yang sama, dengan kata kunci penting ditandai kuning, dan waktu pengerjaan yang jelas dan terbatas.</p>
-    ${needsSetup ? `<div class="notice error">Rekap belum aktif: URL Apps Script belum diisi di dalam kode (variabel SCRIPT_URL). Simulasi tetap bisa dicoba, tapi hasil belum tersimpan ke Google Sheets.</div>` : ''}
     <label class="field-label" for="nama">Nama Siswa</label>
     <input type="text" id="nama" placeholder="Tulis nama lengkap...">
     <button class="btn-primary" id="mulaiBtn" onclick="mulai()">Mulai Simulasi</button>
@@ -381,18 +374,14 @@ async function finish(){
   };
 
   let saveError = false;
-  if(true){
-    try{
-      await fetch(SCRIPT_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(record)
-      });
-    }catch(err){
-      console.error('Gagal menyimpan rekap ke Google Sheets:', err);
-      saveError = true;
-    }
-  } else {
+  try{
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(record)
+    });
+  }catch(err){
+    console.error('Gagal menyimpan rekap ke Google Sheets:', err);
     saveError = true;
   }
 
@@ -418,7 +407,7 @@ function renderEnd(record, saveError){
         <div class="m-value">${Math.round(record.waktuDetik/record.total)}s</div>
       </div>
     </div>
-    ${saveError ? `<div class="notice error">Hasil belum tersimpan ke rekap (cek koneksi atau pengaturan SCRIPT_URL).</div>` : `<div class="notice">Hasil sudah tersimpan dan bisa dilihat guru di menu rekap.</div>`}
+    ${saveError ? `<div class="notice error">Hasil belum tersimpan ke rekap (cek koneksi internet, lalu coba lagi).</div>` : `<div class="notice">Hasil sudah tersimpan dan bisa dilihat guru di menu rekap.</div>`}
     <div class="btn-row">
       <button class="btn-secondary" onclick="renderStart()">Ulangi</button>
       <button class="btn-primary" onclick="showRekap()">Lihat Rekap Guru</button>
@@ -430,26 +419,18 @@ async function showRekap(){
   clearInterval(timer);
   card.innerHTML = `<div class="loading">Memuat rekap jawaban siswa...</div>`;
 
-  if(false){
-    card.innerHTML = `
-      <h1 style="font-size:19px;">Rekap Jawaban Siswa</h1>
-      <div class="notice error">URL Apps Script belum diatur, rekap belum bisa dimuat. Lengkapi variabel SCRIPT_URL di kode terlebih dahulu.</div>
-      <button class="btn-secondary" onclick="renderStart()">Kembali</button>
-    `;
-    return;
-  }
-
   let records = [];
   let loadError = false;
   try{
     const res = await fetch(SCRIPT_URL);
     records = await res.json();
+    if(!Array.isArray(records)) records = [];
   }catch(err){
     console.error('Gagal memuat rekap:', err);
     loadError = true;
   }
 
-  records.sort((a,b)=> b.timestamp - a.timestamp);
+  records.sort((a,b)=> (b.timestamp||0) - (a.timestamp||0));
 
   const rows = records.map(r=>{
     const d = new Date(Number(r.timestamp));
@@ -470,7 +451,7 @@ async function showRekap(){
 
   card.innerHTML = `
     <h1 style="font-size:19px;">Rekap Jawaban Siswa</h1>
-    ${loadError ? `<div class="notice error">Gagal memuat data rekap. Cek koneksi atau pengaturan Apps Script.</div>` : `<div class="notice">Data ini tersimpan di Google Sheets dan bisa dilihat siapa saja yang membuka menu ini — cocok untuk dipantau guru, tapi bukan tempat menyimpan data pribadi sensitif.</div>`}
+    ${loadError ? `<div class="notice error">Gagal memuat data rekap. Cek koneksi internet, lalu klik Muat Ulang.</div>` : `<div class="notice">Data ini tersimpan di Google Sheets dan bisa dilihat siapa saja yang membuka menu ini — cocok untuk dipantau guru, tapi bukan tempat menyimpan data pribadi sensitif.</div>`}
     ${records.length === 0 ? `<div class="rekap-empty">Belum ada siswa yang menyelesaikan simulasi.</div>` : `
       <div style="overflow-x:auto;">
         <table class="rekap-table">
