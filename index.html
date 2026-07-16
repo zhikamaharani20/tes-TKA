@@ -430,7 +430,7 @@ async function showRekap(){
   clearInterval(timer);
   card.innerHTML = `<div class="loading">Memuat rekap jawaban siswa...</div>`;
 
-  if(SCRIPT_URL.includes('PASTE_URL')){
+  if(SCRIPT_URL.includes('https://script.google.com/macros/s/AKfycbwxBpUwfblfAR6qUpmFMjK8443kwNysp9PgKUn9jCqdWMfKRj5rQ88ZAVygrMbBbb8Q/exec')){
     card.innerHTML = `
       <h1 style="font-size:19px;">Rekap Jawaban Siswa</h1>
       <div class="notice error">URL Apps Script belum diatur, rekap belum bisa dimuat. Lengkapi variabel SCRIPT_URL di kode terlebih dahulu.</div>
