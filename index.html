@@ -3,45 +3,48 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Uji Coba Sajian Tes — Literasi Matematika TKA</title>
+<title>TKA SMP — Uji Literasi Matematika</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#14192C;
-    --ink-2:#1D2440;
-    --panel:#FBF8F2;
-    --panel-2:#F1ECE0;
-    --gold:#F2A93B;
-    --green:#3FAE7A;
-    --red:#E2554E;
-    --text-dark:#1B2440;
-    --text-muted:#7C7565;
-    --line:#E4DCC8;
-    --radius:18px;
+    --bg-deep:#1B1035;
+    --bg-glow:#3D2170;
+    --panel:#FFFDF8;
+    --panel-2:#F4EEFF;
+    --primary:#6C4CE0;
+    --primary-dark:#5136B8;
+    --coral:#FF6B57;
+    --coral-dark:#E85541;
+    --yellow:#FFC94D;
+    --teal:#2FBF9F;
+    --text-dark:#241748;
+    --text-muted:#7A6E99;
+    --line:#E4DBF7;
+    --radius:20px;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
     background:
-      radial-gradient(circle at 15% -10%, #232B4A 0%, transparent 45%),
-      radial-gradient(circle at 110% 110%, #232B4A 0%, transparent 40%),
-      var(--ink);
+      radial-gradient(circle at 12% -10%, var(--bg-glow) 0%, transparent 45%),
+      radial-gradient(circle at 105% 105%, #5136B8 0%, transparent 40%),
+      var(--bg-deep);
     min-height:100vh;
     font-family:'Sora',sans-serif;
     color:var(--text-dark);
     display:flex;
-    align-items:center;
+    align-items:flex-start;
     justify-content:center;
     padding:28px 16px;
   }
-  .stage{width:100%;max-width:560px;}
+  .stage{width:100%;max-width:620px;}
   .eyebrow{
     font-family:'IBM Plex Mono',monospace;
     letter-spacing:.14em;
     text-transform:uppercase;
     font-size:12px;
-    color:#B7C0E8;
+    color:#C9B8F5;
     margin:0 0 10px 4px;
     display:flex;
     justify-content:space-between;
@@ -53,38 +56,59 @@
     box-shadow:0 30px 60px -20px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.04);
     position:relative;
   }
-  .scoreboard{
+
+  .topbar{
     display:flex;align-items:center;justify-content:space-between;
-    background:var(--ink-2);
-    border-radius:14px;
-    padding:12px 16px;
-    margin-bottom:20px;
+    background:linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-radius:16px;
+    padding:14px 16px;
+    margin-bottom:18px;
     color:#fff;
+    gap:12px;
+    flex-wrap:wrap;
   }
-  .sb-block{display:flex;flex-direction:column;gap:2px;}
-  .sb-label{
-    font-family:'IBM Plex Mono',monospace;
-    font-size:10px;letter-spacing:.12em;color:#8792BE;text-transform:uppercase;
+  .tb-block{display:flex;flex-direction:column;gap:2px;}
+  .tb-label{
+    font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;
+    color:#D9CCFA;text-transform:uppercase;
   }
-  .sb-value{font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:700;transition:color .3s ease;}
-  .sb-value.clock{font-variant-numeric:tabular-nums;}
-  .dots{display:flex;gap:6px;align-items:center;}
-  .dot{width:9px;height:9px;border-radius:50%;background:#3A4270;transition:background .25s ease, transform .25s ease;}
-  .dot.done{background:var(--gold);}
-  .dot.current{background:#fff;transform:scale(1.3);}
+  .tb-value{font-family:'IBM Plex Mono',monospace;font-size:24px;font-weight:700;transition:color .3s ease;font-variant-numeric:tabular-nums;}
+  .btn-submit{
+    background:var(--coral);color:#fff;font-weight:700;font-size:14px;
+    padding:11px 18px;border-radius:12px;border:none;cursor:pointer;
+    transition:background .2s ease, transform .15s ease;
+    white-space:nowrap;
+  }
+  .btn-submit:hover{background:var(--coral-dark);transform:translateY(-1px);}
+
+  .navgrid{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+  .navitem{
+    width:38px;height:38px;border-radius:10px;
+    border:1.5px solid var(--line);
+    background:var(--panel-2);
+    font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:13px;
+    color:var(--text-muted);cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:all .15s ease;
+  }
+  .navitem.answered{background:var(--primary);color:#fff;border-color:var(--primary);}
+  .navitem.current{outline:2.5px solid var(--coral);outline-offset:2px;}
+  .navitem:hover{border-color:var(--primary);}
 
   h1{font-size:clamp(20px,4.5vw,26px);line-height:1.25;margin:0 0 14px;font-weight:800;letter-spacing:-.01em;}
-  .lede{font-size:15px;color:var(--text-muted);line-height:1.6;margin:0 0 18px;}
+  .lede{font-size:15px;color:var(--text-muted);line-height:1.6;margin:0 0 20px;}
   label.field-label{
     display:block;font-family:'IBM Plex Mono',monospace;font-size:11.5px;
     color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;
   }
-  input[type=text]{
+  input[type=text], input[type=number]{
     width:100%;padding:13px 14px;border-radius:12px;border:1.5px solid var(--line);
     background:var(--panel-2);font-family:'Sora',sans-serif;font-size:15px;color:var(--text-dark);
     margin-bottom:16px;
   }
-  input[type=text]:focus{outline:2px solid var(--gold);border-color:var(--gold);}
+  input:focus{outline:2px solid var(--primary);border-color:var(--primary);}
+  .field-row{display:flex;gap:12px;}
+  .field-row > div{flex:1;}
 
   .passage{
     background:var(--panel-2);
@@ -96,24 +120,19 @@
     margin-bottom:16px;
     border:1px solid var(--line);
   }
-  .passage mark{background:rgba(242,169,59,.4);padding:0 3px;border-radius:4px;font-weight:600;color:var(--text-dark);}
 
   button{font-family:'Sora',sans-serif;cursor:pointer;border:none;}
   .btn-primary{
-    width:100%;background:var(--ink);color:#fff;font-weight:700;font-size:15.5px;
+    width:100%;background:var(--coral);color:#fff;font-weight:700;font-size:15.5px;
     padding:15px 18px;border-radius:12px;transition:transform .15s ease, background .2s ease;
   }
-  .btn-primary:hover{background:#232B4A;transform:translateY(-1px);}
+  .btn-primary:hover{background:var(--coral-dark);transform:translateY(-1px);}
   .btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none;}
-  .btn-ghost{
-    width:100%;background:transparent;color:#B7C0E8;font-weight:600;font-size:13px;
-    padding:10px 12px;border-radius:10px;text-decoration:underline;margin-top:10px;
-  }
-  .btn-ghost:hover{color:#fff;}
   .btn-secondary{
     background:var(--panel-2);color:var(--text-dark);font-weight:700;font-size:14px;
     padding:12px 16px;border-radius:12px;border:1.5px solid var(--line);
   }
+  .btn-secondary:disabled{opacity:.4;cursor:not-allowed;}
 
   .option{
     width:100%;text-align:left;background:var(--panel-2);border:1.5px solid var(--line);
@@ -123,27 +142,32 @@
   }
   .option .tag{
     font-family:'IBM Plex Mono',monospace;font-size:12px;width:24px;height:24px;border-radius:50%;
-    background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+    background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;
   }
-  .option:hover{border-color:var(--gold);}
-  .option.correct{background:rgba(63,174,122,.18);border-color:var(--green);}
-  .option.wrong{background:rgba(226,85,78,.16);border-color:var(--red);}
-  .option:disabled{cursor:default;}
+  .option:hover{border-color:var(--primary);}
+  .option.selected{background:rgba(108,76,224,.12);border-color:var(--primary);}
+  .option.selected .tag{background:var(--coral);}
 
-  .qnum{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;display:block;}
+  .qnum{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--primary);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;display:block;}
   .qtext{font-size:16.5px;font-weight:700;line-height:1.5;margin:0 0 16px;}
 
-  .score-hero{text-align:center;padding:10px 0 8px;}
-  .score-num{font-family:'IBM Plex Mono',monospace;font-size:56px;font-weight:700;line-height:1;color:var(--ink);}
-  .score-num span{font-size:22px;color:var(--text-muted);}
-  .score-label{font-size:13px;color:var(--text-muted);margin-top:6px;font-weight:600;}
-  .meta-row{display:flex;gap:10px;margin:20px 0 20px;}
-  .meta-box{flex:1;background:var(--panel-2);border-radius:12px;padding:12px 14px;border:1px solid var(--line);}
-  .meta-box .m-label{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;}
-  .meta-box .m-value{font-size:19px;font-weight:700;margin-top:3px;font-family:'IBM Plex Mono',monospace;}
-  .footnote{font-size:12px;color:#B7C0E8;text-align:center;margin-top:14px;line-height:1.6;}
+  .nav-buttons{display:flex;gap:10px;margin-top:18px;}
+  .nav-buttons button{flex:1;}
 
-  .rekap-table{width:100%;border-collapse:collapse;font-size:13.5px;margin-bottom:14px;}
+  .score-hero{text-align:center;padding:14px 0 8px;}
+  .score-num{font-family:'IBM Plex Mono',monospace;font-size:60px;font-weight:700;line-height:1;color:var(--primary);}
+  .score-num span{font-size:22px;color:var(--text-muted);}
+  .score-label{font-size:14px;color:var(--text-muted);margin-top:10px;font-weight:600;line-height:1.6;}
+  .footnote{font-size:12px;color:#C9B8F5;text-align:center;margin-top:16px;line-height:1.6;}
+  .notice{
+    background:rgba(108,76,224,.1);border:1px solid rgba(108,76,224,.3);
+    border-radius:10px;padding:10px 12px;font-size:12.5px;color:var(--text-dark);
+    margin-bottom:16px;line-height:1.5;
+  }
+  .notice.error{background:rgba(255,107,87,.12);border-color:rgba(255,107,87,.4);}
+  .loading{text-align:center;color:var(--text-muted);font-size:14px;padding:24px 0;}
+
+  .rekap-table{width:100%;border-collapse:collapse;font-size:13.5px;margin-bottom:22px;}
   .rekap-table th, .rekap-table td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);}
   .rekap-table th{
     font-family:'IBM Plex Mono',monospace;font-size:10.5px;text-transform:uppercase;
@@ -151,226 +175,242 @@
   }
   .rekap-table td.num{font-family:'IBM Plex Mono',monospace;font-weight:700;}
   .rekap-empty{text-align:center;color:var(--text-muted);font-size:14px;padding:30px 10px;}
-  .notice{
-    background:rgba(242,169,59,.16);border:1px solid rgba(242,169,59,.4);
-    border-radius:10px;padding:10px 12px;font-size:12.5px;color:var(--text-dark);
-    margin-bottom:16px;line-height:1.5;
-  }
-  .notice.error{background:rgba(226,85,78,.14);border-color:rgba(226,85,78,.4);}
-  .btn-row{display:flex;gap:10px;}
-  .btn-row .btn-primary, .btn-row .btn-secondary{flex:1;}
-  .loading{text-align:center;color:var(--text-muted);font-size:14px;padding:24px 0;}
+  .section-title{font-size:15px;font-weight:800;margin:0 0 4px;color:var(--text-dark);}
+  .section-sub{font-size:12.5px;color:var(--text-muted);margin:0 0 14px;}
+  .bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .bar-label{width:64px;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:var(--text-dark);flex-shrink:0;}
+  .bar-track{flex:1;height:14px;background:var(--panel-2);border-radius:8px;overflow:hidden;border:1px solid var(--line);}
+  .bar-fill{height:100%;background:var(--coral);border-radius:8px 0 0 8px;}
+  .bar-pct{width:44px;text-align:right;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:var(--text-muted);flex-shrink:0;}
 
-  @media (max-width:400px){
+  @media (max-width:420px){
     .card{padding:20px 18px;}
-    .score-num{font-size:44px;}
+    .score-num{font-size:46px;}
+    .field-row{flex-direction:column;gap:0;}
   }
 </style>
 </head>
 <body>
 
 <div class="stage">
-  <div class="eyebrow"><span>TKA · LITERASI MATEMATIKA</span><span>SMPN 6 · 2025/2026</span></div>
+  <div class="eyebrow"><span>📘 TKA SMP · LITERASI MATEMATIKA</span><span>SMPN 6 · 2025/2026</span></div>
   <div class="card" id="card"></div>
 </div>
 
 <script>
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwxBpUwfblfAR6qUpmFMjK8443kwNysp9PgKUn9jCqdWMfKRj5rQ88ZAVygrMbBbb8Q/exec';
+const DURASI_UJIAN_MENIT = 120;
+const DURASI_UJIAN_DETIK = DURASI_UJIAN_MENIT * 60;
 
 const QUIZ = [
   {
-    passage: `Toko <mark>Sinar Jaya</mark> mengadakan promo alat tulis. Sebuah buku tulis dijual seharga <mark>Rp4.500</mark> per buah. Jika membeli dalam satu lusin (12 buah), pembeli mendapat potongan harga sebesar <mark>Rp6.000</mark> untuk keseluruhan pembelian.`,
+    passage: `Toko Sinar Jaya mengadakan promo alat tulis. Sebuah buku tulis dijual seharga Rp4.500 per buah. Jika membeli dalam satu lusin (12 buah), pembeli mendapat potongan harga sebesar Rp6.000 untuk keseluruhan pembelian.`,
     question: "Berapa total uang yang harus dibayar jika membeli 1 lusin buku tulis tersebut?",
     options: ["Rp48.000", "Rp54.000", "Rp58.000", "Rp60.000"],
-    answer: 1,
-    time: 60
+    answer: 1
   },
   {
-    passage: `Andi berangkat dari rumah menuju sekolah yang berjarak <mark>6 km</mark>. Ia mengendarai sepeda dengan kecepatan rata-rata <mark>12 km/jam</mark>.`,
+    passage: `Andi berangkat dari rumah menuju sekolah yang berjarak 6 km. Ia mengendarai sepeda dengan kecepatan rata-rata 12 km/jam.`,
     question: "Berapa menit waktu yang dibutuhkan Andi untuk sampai ke sekolah?",
     options: ["20 menit", "30 menit", "40 menit", "45 menit"],
-    answer: 1,
-    time: 60
+    answer: 1
   },
   {
     passage: `Perpustakaan sekolah mencatat jumlah pengunjung selama 5 hari: Senin 24 orang, Selasa 30 orang, Rabu 18 orang, Kamis 28 orang, Jumat 20 orang.`,
     question: "Berapa rata-rata jumlah pengunjung perpustakaan per hari selama 5 hari tersebut?",
     options: ["22 orang", "24 orang", "26 orang", "28 orang"],
-    answer: 1,
-    time: 65
+    answer: 1
   },
   {
-    passage: `Sebuah tas ransel memiliki harga awal <mark>Rp180.000</mark>. Toko memberikan diskon sebesar <mark>25%</mark> untuk pembelian hari ini.`,
+    passage: `Sebuah tas ransel memiliki harga awal Rp180.000. Toko memberikan diskon sebesar 25% untuk pembelian hari ini.`,
     question: "Berapa harga yang harus dibayar setelah diskon?",
     options: ["Rp45.000", "Rp125.000", "Rp135.000", "Rp150.000"],
-    answer: 2,
-    time: 55
+    answer: 2
   },
   {
-    passage: `Di sebuah minimarket, minyak goreng kemasan <mark>1 liter</mark> dijual seharga <mark>Rp18.000</mark>, sedangkan kemasan <mark>2 liter</mark> dijual seharga <mark>Rp33.000</mark>.`,
+    passage: `Di sebuah minimarket, minyak goreng kemasan 1 liter dijual seharga Rp18.000, sedangkan kemasan 2 liter dijual seharga Rp33.000.`,
     question: "Kemasan manakah yang harganya lebih hemat per liter?",
     options: ["Kemasan 1 liter", "Kemasan 2 liter", "Harganya sama", "Tidak bisa ditentukan"],
-    answer: 1,
-    time: 55
+    answer: 1
   }
 ];
 
-let idx = 0;
-let score = 0;
-let totalTimeUsed = 0;
-let timer = null;
-let timeLeft = 0;
-let timeLimit = 0;
-let answered = false;
+const params = new URLSearchParams(window.location.search);
+const isGuru = params.get('guru') === '1';
+
 let studentName = '';
+let studentKelas = '';
+let studentAbsen = '';
+let currentQ = 0;
+let answers = new Array(QUIZ.length).fill(null);
+let examTimeLeft = DURASI_UJIAN_DETIK;
+let examTimer = null;
 
 const card = document.getElementById('card');
 
 function fmt(sec){
-  const m = String(Math.floor(sec/60)).padStart(2,'0');
-  const s = String(sec%60).padStart(2,'0');
-  return m+':'+s;
+  const h = Math.floor(sec/3600);
+  const m = Math.floor((sec%3600)/60);
+  const s = sec%60;
+  return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
 }
 
-function renderDots(){
-  let html = '<div class="dots">';
+function renderStart(){
+  card.innerHTML = `
+    <h1>Uji Literasi Matematika — Simulasi TKA</h1>
+    <p class="lede">Kerjakan seluruh soal dalam waktu yang tersedia. Kamu bisa berpindah antar soal secara bebas sebelum mengumpulkan jawaban.</p>
+    <label class="field-label" for="nama">Nama Siswa</label>
+    <input type="text" id="nama" placeholder="Tulis nama lengkap...">
+    <div class="field-row">
+      <div>
+        <label class="field-label" for="kelas">Kelas</label>
+        <input type="text" id="kelas" placeholder="Misal: 9A">
+      </div>
+      <div>
+        <label class="field-label" for="absen">No. Absen</label>
+        <input type="number" id="absen" placeholder="Misal: 12">
+      </div>
+    </div>
+    <button class="btn-primary" id="mulaiBtn" onclick="mulai()">Mulai Ujian</button>
+  `;
+  const check = ()=>{
+    const nama = document.getElementById('nama').value.trim();
+    const kelas = document.getElementById('kelas').value.trim();
+    const absen = document.getElementById('absen').value.trim();
+    document.getElementById('mulaiBtn').disabled = !(nama && kelas && absen);
+  };
+  document.getElementById('nama').addEventListener('input', check);
+  document.getElementById('kelas').addEventListener('input', check);
+  document.getElementById('absen').addEventListener('input', check);
+  check();
+}
+
+function mulai(){
+  studentName = document.getElementById('nama').value.trim();
+  studentKelas = document.getElementById('kelas').value.trim();
+  studentAbsen = document.getElementById('absen').value.trim();
+  if(!studentName || !studentKelas || !studentAbsen) return;
+
+  currentQ = 0;
+  answers = new Array(QUIZ.length).fill(null);
+  examTimeLeft = DURASI_UJIAN_DETIK;
+
+  renderExam();
+  clearInterval(examTimer);
+  examTimer = setInterval(examTick, 1000);
+}
+
+function examTick(){
+  examTimeLeft--;
+  const clockEl = document.getElementById('examClock');
+  if(clockEl){
+    clockEl.textContent = fmt(examTimeLeft);
+    if(examTimeLeft <= 300) clockEl.style.color = '#FFB4A8';
+    else if(examTimeLeft <= 900) clockEl.style.color = 'var(--yellow)';
+    else clockEl.style.color = '#fff';
+  }
+  if(examTimeLeft <= 0){
+    clearInterval(examTimer);
+    finishExam(true);
+  }
+}
+
+function topbar(){
+  return `
+    <div class="topbar">
+      <div class="tb-block">
+        <span class="tb-label">Sisa Waktu</span>
+        <span class="tb-value" id="examClock">${fmt(examTimeLeft)}</span>
+      </div>
+      <button class="btn-submit" onclick="confirmSubmit()">Kumpulkan Ujian</button>
+    </div>
+  `;
+}
+
+function navgrid(){
+  let html = '<div class="navgrid">';
   for(let i=0;i<QUIZ.length;i++){
-    let cls = 'dot';
-    if(i < idx) cls += ' done';
-    else if(i === idx) cls += ' current';
-    html += `<div class="${cls}"></div>`;
+    let cls = 'navitem';
+    if(answers[i] !== null) cls += ' answered';
+    if(i === currentQ) cls += ' current';
+    html += `<div class="${cls}" onclick="goToQuestion(${i})">${i+1}</div>`;
   }
   html += '</div>';
   return html;
 }
 
-function scoreboard(){
-  return `
-    <div class="scoreboard">
-      <div class="sb-block">
-        <span class="sb-label">Soal</span>
-        <span class="sb-value">${idx+1} / ${QUIZ.length}</span>
-      </div>
-      ${renderDots()}
-      <div class="sb-block" style="align-items:flex-end;">
-        <span class="sb-label">Waktu</span>
-        <span class="sb-value clock" id="clock">${fmt(timeLeft)}</span>
-      </div>
-    </div>
-  `;
-}
-
-function renderStart(){
-  card.innerHTML = `
-    <h1>Simulasi Sajian Tes Literasi Matematika</h1>
-    <p class="lede">Bacaan dan soal ditampilkan dalam satu layar yang sama, dengan kata kunci penting ditandai kuning, dan waktu pengerjaan yang jelas dan terbatas.</p>
-    <label class="field-label" for="nama">Nama Siswa</label>
-    <input type="text" id="nama" placeholder="Tulis nama lengkap...">
-    <button class="btn-primary" id="mulaiBtn" onclick="mulai()">Mulai Simulasi</button>
-    <button class="btn-ghost" onclick="showRekap()">Lihat Rekap Jawaban (Mode Guru)</button>
-  `;
-  document.getElementById('nama').addEventListener('input', (e)=>{
-    document.getElementById('mulaiBtn').disabled = e.target.value.trim().length === 0;
-  });
-  document.getElementById('mulaiBtn').disabled = true;
-}
-
-function mulai(){
-  studentName = document.getElementById('nama').value.trim();
-  if(!studentName) return;
-  idx = 0; score = 0; totalTimeUsed = 0;
-  startQuestion();
-}
-
-function startQuestion(){
-  answered = false;
-  timeLimit = QUIZ[idx].time;
-  timeLeft = timeLimit;
-  renderQuestion();
-  clearInterval(timer);
-  timer = setInterval(tick, 1000);
-}
-
-function tick(){
-  if(answered) return;
-  timeLeft--;
-  totalTimeUsed++;
-  const clockEl = document.getElementById('clock');
-  if(clockEl){
-    clockEl.textContent = fmt(timeLeft);
-    if(timeLeft <= 10) clockEl.style.color = 'var(--red)';
-    else if(timeLeft <= timeLimit*0.4) clockEl.style.color = 'var(--gold)';
-    else clockEl.style.color = 'var(--green)';
-  }
-  if(timeLeft <= 0){
-    clearInterval(timer);
-    lockAnswer(-1);
-  }
-}
-
-function renderQuestion(){
-  const q = QUIZ[idx];
+function renderExam(){
+  const q = QUIZ[currentQ];
   const letters = ['A','B','C','D'];
   card.innerHTML = `
-    ${scoreboard()}
-    <span class="qnum">Bacaan &amp; Soal ${idx+1} dari ${QUIZ.length}</span>
+    ${topbar()}
+    ${navgrid()}
+    <span class="qnum">Soal ${currentQ+1} dari ${QUIZ.length}</span>
     <div class="passage">${q.passage}</div>
     <p class="qtext">${q.question}</p>
     <div id="options">
       ${q.options.map((opt,i)=>`
-        <button class="option" data-i="${i}" onclick="lockAnswer(${i})">
+        <button class="option ${answers[currentQ]===i ? 'selected':''}" data-i="${i}" onclick="pilihJawaban(${i})">
           <span class="tag">${letters[i]}</span> ${opt}
         </button>
       `).join('')}
     </div>
+    <div class="nav-buttons">
+      <button class="btn-secondary" onclick="prevQuestion()" ${currentQ===0?'disabled':''}>← Sebelumnya</button>
+      <button class="btn-secondary" onclick="nextQuestion()" ${currentQ===QUIZ.length-1?'disabled':''}>Selanjutnya →</button>
+    </div>
   `;
-  const clockEl = document.getElementById('clock');
-  if(clockEl){
-    if(timeLeft <= 10) clockEl.style.color = 'var(--red)';
-    else if(timeLeft <= timeLimit*0.4) clockEl.style.color = 'var(--gold)';
-    else clockEl.style.color = 'var(--green)';
+}
+
+function pilihJawaban(i){
+  answers[currentQ] = i;
+  renderExam();
+}
+
+function goToQuestion(i){
+  currentQ = i;
+  renderExam();
+}
+
+function prevQuestion(){
+  if(currentQ > 0){ currentQ--; renderExam(); }
+}
+
+function nextQuestion(){
+  if(currentQ < QUIZ.length-1){ currentQ++; renderExam(); }
+}
+
+function confirmSubmit(){
+  const belum = answers.filter(a=>a===null).length;
+  let pesan = 'Yakin ingin mengumpulkan jawaban sekarang?';
+  if(belum > 0){
+    pesan = `Masih ada ${belum} soal yang belum dijawab. Yakin ingin tetap mengumpulkan jawaban sekarang?`;
+  }
+  if(window.confirm(pesan)){
+    finishExam(false);
   }
 }
 
-function lockAnswer(choice){
-  if(answered) return;
-  answered = true;
-  clearInterval(timer);
-  const q = QUIZ[idx];
-  const correct = choice === q.answer;
-  if(correct) score++;
-
-  const opts = document.querySelectorAll('.option');
-  opts.forEach(o=>{
-    o.disabled = true;
-    const i = parseInt(o.dataset.i);
-    if(i === q.answer) o.classList.add('correct');
-    else if(i === choice) o.classList.add('wrong');
-  });
-
-  setTimeout(()=>{
-    idx++;
-    if(idx < QUIZ.length){
-      startQuestion();
-    } else {
-      finish();
-    }
-  }, 900);
-}
-
-async function finish(){
-  clearInterval(timer);
+async function finishExam(waktuHabis){
+  clearInterval(examTimer);
   const total = QUIZ.length;
-  const nilai = Math.round((score/total)*100);
+  const correctness = QUIZ.map((q,i)=> answers[i] === q.answer ? 1 : 0);
+  const benar = correctness.reduce((a,b)=>a+b,0);
+  const skor = Math.round((benar/total)*100);
+  const waktuDetik = DURASI_UJIAN_DETIK - examTimeLeft;
+
   card.innerHTML = `<div class="loading">Menyimpan hasil...</div>`;
 
   const record = {
     nama: studentName,
-    skor: nilai,
-    benar: score,
+    kelas: studentKelas,
+    noAbsen: studentAbsen,
+    skor: skor,
+    benar: benar,
     total: total,
-    waktuDetik: totalTimeUsed,
-    timestamp: Date.now()
+    waktuDetik: waktuDetik,
+    timestamp: Date.now(),
+    answers: correctness
   };
 
   let saveError = false;
@@ -381,42 +421,25 @@ async function finish(){
       body: JSON.stringify(record)
     });
   }catch(err){
-    console.error('Gagal menyimpan rekap ke Google Sheets:', err);
+    console.error('Gagal menyimpan hasil:', err);
     saveError = true;
   }
 
-  renderEnd(record, saveError);
+  renderEnd(record, saveError, waktuHabis);
 }
 
-function renderEnd(record, saveError){
-  const menit = Math.floor(record.waktuDetik/60);
-  const detik = record.waktuDetik % 60;
+function renderEnd(record, saveError, waktuHabis){
   card.innerHTML = `
     <div class="score-hero">
-      <div class="qnum" style="text-align:center;">Simulasi Selesai — ${record.nama}</div>
+      <div class="qnum" style="text-align:center;">${waktuHabis ? 'Waktu Habis — Ujian Selesai' : 'Ujian Selesai'}</div>
       <div class="score-num">${record.skor}<span>/100</span></div>
-      <div class="score-label">${record.benar} dari ${record.total} soal benar</div>
+      <div class="score-label">Terima kasih, ${record.nama}.<br>Hasilmu sudah dicatat oleh sistem.</div>
     </div>
-    <div class="meta-row">
-      <div class="meta-box">
-        <div class="m-label">Waktu Total</div>
-        <div class="m-value">${menit}m ${detik}s</div>
-      </div>
-      <div class="meta-box">
-        <div class="m-label">Rata-rata / Soal</div>
-        <div class="m-value">${Math.round(record.waktuDetik/record.total)}s</div>
-      </div>
-    </div>
-    ${saveError ? `<div class="notice error">Hasil belum tersimpan ke rekap (cek koneksi internet, lalu coba lagi).</div>` : `<div class="notice">Hasil sudah tersimpan dan bisa dilihat guru di menu rekap.</div>`}
-    <div class="btn-row">
-      <button class="btn-secondary" onclick="renderStart()">Ulangi</button>
-      <button class="btn-primary" onclick="showRekap()">Lihat Rekap Guru</button>
-    </div>
+    ${saveError ? `<div class="notice error">Hasil belum berhasil tersimpan (cek koneksi internet). Hubungi guru jika ini terus terjadi.</div>` : `<div class="notice">Hasil sudah tersimpan.</div>`}
   `;
 }
 
-async function showRekap(){
-  clearInterval(timer);
+async function renderGuruRekap(){
   card.innerHTML = `<div class="loading">Memuat rekap jawaban siswa...</div>`;
 
   let records = [];
@@ -441,6 +464,8 @@ async function showRekap(){
     return `
       <tr>
         <td>${r.nama}</td>
+        <td>${r.kelas||'-'}</td>
+        <td>${r.noAbsen||'-'}</td>
         <td class="num">${r.skor}</td>
         <td class="num">${r.benar}/${r.total}</td>
         <td class="num">${menit}m ${detik}s</td>
@@ -449,27 +474,51 @@ async function showRekap(){
     `;
   }).join('');
 
+  const validRecords = records.filter(r => Array.isArray(r.answers) && r.answers.length === QUIZ.length);
+  const perSoal = QUIZ.map((q, i)=>{
+    const n = validRecords.length;
+    const benarCount = validRecords.reduce((sum, r)=> sum + (Number(r.answers[i]) === 1 ? 1 : 0), 0);
+    const pctBenar = n > 0 ? Math.round((benarCount/n)*100) : 0;
+    return { nomor: i+1, n, benarCount, salahCount: n-benarCount, pctBenar, pctSalah: 100-pctBenar };
+  }).sort((a,b)=> b.pctSalah - a.pctSalah);
+
+  const barRows = perSoal.map(s=>`
+    <div class="bar-row">
+      <div class="bar-label">Soal ${s.nomor}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${s.pctSalah}%;"></div></div>
+      <div class="bar-pct">${s.pctSalah}%</div>
+    </div>
+  `).join('');
+
   card.innerHTML = `
-    <h1 style="font-size:19px;">Rekap Jawaban Siswa</h1>
-    ${loadError ? `<div class="notice error">Gagal memuat data rekap. Cek koneksi internet, lalu klik Muat Ulang.</div>` : `<div class="notice">Data ini tersimpan di Google Sheets dan bisa dilihat siapa saja yang membuka menu ini — cocok untuk dipantau guru, tapi bukan tempat menyimpan data pribadi sensitif.</div>`}
-    ${records.length === 0 ? `<div class="rekap-empty">Belum ada siswa yang menyelesaikan simulasi.</div>` : `
+    <h1 style="font-size:19px;">Rekap &amp; Analisis — Mode Guru</h1>
+    ${loadError ? `<div class="notice error">Gagal memuat data. Cek koneksi internet, lalu klik Muat Ulang.</div>` : `<div class="notice">Halaman ini hanya untuk guru — siswa tidak melihat menu ini.</div>`}
+
+    <div class="section-title">Analisis Tingkat Kesalahan per Soal</div>
+    <p class="section-sub">Diurutkan dari soal dengan persentase salah tertinggi (berdasarkan ${validRecords.length} siswa yang datanya lengkap)</p>
+    ${validRecords.length === 0 ? `<div class="rekap-empty">Belum ada data untuk dianalisis.</div>` : barRows}
+
+    <div class="section-title" style="margin-top:22px;">Daftar Nilai Siswa</div>
+    <p class="section-sub">Seluruh siswa yang sudah menyelesaikan ujian</p>
+    ${records.length === 0 ? `<div class="rekap-empty">Belum ada siswa yang menyelesaikan ujian.</div>` : `
       <div style="overflow-x:auto;">
         <table class="rekap-table">
           <thead>
-            <tr><th>Nama</th><th>Nilai</th><th>Benar</th><th>Waktu</th><th>Selesai Pada</th></tr>
+            <tr><th>Nama</th><th>Kelas</th><th>Absen</th><th>Nilai</th><th>Benar</th><th>Waktu</th><th>Selesai</th></tr>
           </thead>
           <tbody>${rows}</tbody>
         </table>
       </div>
     `}
-    <div class="btn-row">
-      <button class="btn-secondary" onclick="renderStart()">Kembali</button>
-      <button class="btn-primary" onclick="showRekap()">Muat Ulang</button>
-    </div>
+    <button class="btn-secondary" style="width:100%;" onclick="renderGuruRekap()">Muat Ulang</button>
   `;
 }
 
-renderStart();
+if(isGuru){
+  renderGuruRekap();
+} else {
+  renderStart();
+}
 </script>
 
 </body>
